@@ -21,3 +21,6 @@
 ## Instalação
 
 - pip install discord pyautogui requests
+
+# Discord
+elanaoteama
