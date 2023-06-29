@@ -3,7 +3,7 @@
 
 
 
-## Features
+## Características
 
 - Modifique a mensagem entrando no arquivo de configuração
 
