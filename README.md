@@ -8,7 +8,7 @@
 - Modifique a mensagem entrando no arquivo de configuração
 
   
-## Instruções
+## Instruções PC
 
 
 - Clique em Baixar e clique em Baixar como Zip
@@ -17,6 +17,11 @@
 - Configure seu webhook e a sua mensagem de notificação em notificação.json (não obrigatorio colocar webhook, caso não coloque apenas ignore o erro)
 - Iniciar ExtensionForVanhbaka.py
 - !comandos - para ver os comandos disponiveis para uso.
+
+## Instruções Mobile
+
+- Coloque os arquivos na mesma pasta do seu sniper
+- Use python VanhbakaMobile.py ao inves de python main.py
 
 
 ## Instalação
