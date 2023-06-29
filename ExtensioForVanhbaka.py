@@ -48,7 +48,7 @@ async def screenshot(ctx):
         embed = discord.Embed(
             title="Erro",
             description="Você não tem permissão para usar este comando.",
-            color=discord.Colour.from_rgb(255, 182, 193)
+            color=discord.Colour.from_rgb(255, 0, 0)
         )
         await ctx.send(embed=embed)
         return
@@ -112,12 +112,17 @@ async def autorestart(ctx, minutes: int):
         embed = discord.Embed(
             title="Erro",
             description="O reinício automático já está ativo. Use !autorestartoff para desativá-lo.",
-            color=discord.Colour.from_rgb(255, 182, 193)
+            color=discord.Colour.from_rgb(255, 0, 0)
         )
         await ctx.send(embed=embed)
         return
 
-    await ctx.send("Você deseja receber notificação quando reiniciar? (sim/não)")
+    embed = discord.Embed(
+        description="Você deseja receber notificação quando reiniciar? (sim/não)",
+        color=discord.Colour.from_rgb(255, 0, 0)
+    )
+    await ctx.send(embed=embed)
+
     response = await bot.wait_for("message", check=lambda m: m.author == ctx.author)
     if response.content.lower() == "sim":
         notify_on_restart = True
@@ -126,8 +131,8 @@ async def autorestart(ctx, minutes: int):
         notify_on_restart = False
         success_msg = "Notificação do webhook desativada."
     else:
-        await ctx.send("Resposta inválida.")
-        return
+        notify_on_restart = True  # Definir como padrão "sim" quando a resposta for inválida
+        success_msg = "Resposta inválida. Notificação do webhook ativada por padrão."
 
     global auto_restart_task
     global auto_restart_minutes
@@ -135,7 +140,7 @@ async def autorestart(ctx, minutes: int):
 
     embed = discord.Embed(
         title="Autorestart Ligado",
-        color=discord.Colour.from_rgb(255, 182, 193)
+        color=discord.Colour.from_rgb(255, 0, 0)
     )
     embed.add_field(name="Status", value="A reinicialização automática foi habilitada.")
     embed.add_field(name="Minutes", value=f"Reiniciando a cada {minutes} minutos.")
@@ -144,7 +149,9 @@ async def autorestart(ctx, minutes: int):
 
     auto_restart_minutes = minutes
     auto_restart_enabled = True
+    notification_enabled = notify_on_restart
     auto_restart_task = bot.loop.create_task(auto_restart())
+
     
 @bot.command()
 async def autorestartoff(ctx):
@@ -153,7 +160,7 @@ async def autorestartoff(ctx):
         embed = discord.Embed(
             title="Erro",
             description="Você não tem permissão para usar este comando.",
-            color=discord.Colour.from_rgb(255, 182, 193)
+            color=discord.Colour.from_rgb(255, 0, 0)
         )
         await ctx.send(embed=embed)
         return
@@ -164,19 +171,22 @@ async def autorestartoff(ctx):
     if not auto_restart_task:
         embed = discord.Embed(
             description="O reinício automático já está desativado.",
-            color=discord.Colour.from_rgb(255, 182, 193)
+            color=discord.Colour.from_rgb(255, 0, 0)
         )
         await ctx.send(embed=embed)
         return
 
     embed = discord.Embed(
         description="Desativando o reinício automático...",
-        color=discord.Colour.from_rgb(255, 182, 193)
+        color=discord.Colour.from_rgb(255, 0, 0)
     )
     await ctx.send(embed=embed)
     auto_restart_enabled = False
     auto_restart_task.cancel()
     auto_restart_task = None
+
+    # Reinicia o processo
+    restart_process()
 
 @bot.command()
 async def restart(ctx):
@@ -185,7 +195,7 @@ async def restart(ctx):
         embed = discord.Embed(
             title="Erro",
             description="Você não tem permissão para usar este comando.",
-            color=discord.Colour.from_rgb(255, 182, 193)
+            color=discord.Colour.from_rgb(255, 0, 0)
         )
         await ctx.send(embed=embed)
         return
@@ -193,7 +203,7 @@ async def restart(ctx):
     embed = discord.Embed(
         title="Sucesso!",
         description="Reiniciou com sucesso o bot...",
-        color=discord.Colour.from_rgb(255, 182, 193)
+        color=discord.Colour.from_rgb(255, 0, 0)
     )
     await ctx.send(embed=embed)
     restart_process()
@@ -205,49 +215,67 @@ async def autorestartstats(ctx):
         embed = discord.Embed(
             title="Erro",
             description="Você não tem permissão para usar este comando.",
-            color=discord.Colour.from_rgb(255, 182, 193)
+            color=discord.Colour.from_rgb(255, 0, 0)
         )
         await ctx.send(embed=embed)
         return
 
     global auto_restart_enabled
     global auto_restart_minutes
+    global notification_enabled
 
     if auto_restart_enabled:
+        if notification_enabled:
+            notification_status = "Ativada"
+        else:
+            notification_status = "Desativada"
+
         embed = discord.Embed(
             title="Autorestart Status",
-            color=discord.Colour.from_rgb(255, 182, 193)
+            color=discord.Colour.from_rgb(255, 0, 0)
         )
         embed.add_field(name="Status", value="A reinicialização automática está ativada no momento.")
         embed.add_field(name="Minutes", value=f"Reiniciando a cada {auto_restart_minutes} minutos.")
+        embed.add_field(name="Notificação", value=f"Notificação: {notification_status}")
         await ctx.send(embed=embed)
     else:
         embed = discord.Embed(
             title="Stats Autorestart",
             description="O reinício automático está desativado.",
-            color=discord.Colour.from_rgb(255, 182, 193)
+            color=discord.Colour.from_rgb(255, 0, 0)
         )
         await ctx.send(embed=embed)
+
+@bot.command()
+async def support(ctx):
+    embed = discord.Embed(
+            title="Suporte",
+            description="Para suporte entre em contato no Discord: elanaoteama",
+            color=discord.Colour.from_rgb(255, 0, 0)
+        )
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def comandos(ctx):
     commands_list = [
         "!screenshot - Tira uma screenshot da tela e envia para o Discord.",
-        "!autorestart <minutos> <notificar> - Ativa o reinício automático a cada <minutos> minutos e configura a notificação.",
+        "!autorestart <minutos>- Ativa o reinício automático a cada minuto escolhido.",
         "!autorestartoff - Desativa o reinício automático.",
         "!restart - Reinicia o arquivo o bot.",
         "!autorestartstats - Verifica o status do reinício automático.",
-        "!stop - Encerra o bot (não faça isso sem motivo, não vai conseguir ligar mais).",
+        "!stop - Encerra o bot (não faça isso sem motivo, só ira ligar manualmente)",
+        "!support - Para obter suporte sobre o bot ou a extensão",
         "!comandos - Exibe a lista de comandos disponíveis."
+        
     ]
 
     embed = discord.Embed(
         title="Comandos disponíveis",
         description="Lista de comandos disponíveis para uso:",
-        color=discord.Colour.from_rgb(255, 182, 193)
+        color=discord.Colour.from_rgb(255, 0, 0)
     )
     for command in commands_list:
-        embed.add_field(name="Comando", value=command, inline=False)
+        embed.add_field(name="-----------------------------------------------------------------------------", value=command, inline=False)
 
     await ctx.send(embed=embed)
 
@@ -258,7 +286,7 @@ async def stop(ctx):
         embed = discord.Embed(
             title="Erro",
             description="Você não tem permissão para usar este comando.",
-            color=discord.Color.from_rgb(255, 182, 193)
+            color=discord.Color.from_rgb(255, 0, 0)
         )
         await ctx.send(embed=embed)
         return
@@ -266,7 +294,7 @@ async def stop(ctx):
     embed = discord.Embed(
         title="Encerrando o bot",
         description="Encerrando o bot...",
-        color=discord.Color.from_rgb(255, 182, 193)
+        color=discord.Color.from_rgb(255, 0, 0)
     )
     await ctx.send(embed=embed)
     await bot.close()
