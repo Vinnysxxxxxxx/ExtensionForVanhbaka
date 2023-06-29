@@ -22,6 +22,10 @@
 
 - Coloque os arquivos na mesma pasta do seu sniper
 - Use python VanhbakaMobile.py ao inves de python main.py
+- Opcional: para facilitar voce pode mudar o nome do arquivo Vanhbakamobile.py para o nome desejado
+na hora de executart voce vai usar o nome que colocou
+Exemplo: mudei para Vinny.py vou executar como python Vinny.py
+- 
 
 
 ## Instalação
