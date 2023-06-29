@@ -16,3 +16,8 @@
 - Mova ExtensionForVanhbaka.py para a mesma pasta que seu Vanhbaka Sniper
 - Configure seu webhook em notificação.json
 - Iniciar ExtensionForVanhbaka.py
+
+
+## Instalação
+
+- pip install discord pyautogui requests
