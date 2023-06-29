@@ -231,7 +231,6 @@ async def support(ctx):
 @bot.command()
 async def comandos(ctx):
     commands_list = [
-        "!screenshot - Tira uma screenshot da tela e envia para o Discord.",
         "!autorestart <minutos>- Ativa o reinício automático a cada minuto escolhido.",
         "!autorestartoff - Desativa o reinício automático.",
         "!restart - Reinicia o arquivo o bot.",
