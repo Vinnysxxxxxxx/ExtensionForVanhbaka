@@ -14,7 +14,7 @@
 - Clique em Baixar e clique em Baixar como Zip
 - Extraia o arquivo
 - Mova ExtensionForVanhbaka.py para a mesma pasta que seu Vanhbaka Sniper
-- Configure seu webhook em notificação.json
+- Configure seu webhook e a sua mensagem de notificação em notificação.json
 - Iniciar ExtensionForVanhbaka.py
 
 
